@@ -1,0 +1,34 @@
+name: Build SKUNT BASS VST3
+
+on:
+  push:
+    branches: [ main, master ]
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clone JUCE
+        run: git clone --depth 1 --branch 8.0.4 https://github.com/juce-framework/JUCE.git JUCE
+      - name: Configure
+        run: cmake -B build -S . -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build --target SkuntBass_VST3 --config Release --parallel
+      - name: Package
+        shell: pwsh
+        run: |
+          $vst3Path = "build\SkuntBass_artefacts\Release\VST3\SKUNT BASS.vst3"
+          if (Test-Path $vst3Path) {
+            Compress-Archive -Path $vst3Path -DestinationPath "SKUNT_BASS_Windows_x64.zip" -Force
+          } else {
+            Get-ChildItem -Recurse build\SkuntBass_artefacts\ | Select-Object FullName
+            throw "VST3 not found"
+          }
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: SKUNT_BASS_Windows_x64
+          path: SKUNT_BASS_Windows_x64.zip

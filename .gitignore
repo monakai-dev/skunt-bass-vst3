@@ -1,0 +1,49 @@
+# Build artifacts
+build/
+build-*/
+*.o
+*.obj
+*.pch
+*.pdb
+*.ilk
+*.exe
+*.dll
+*.lib
+*.so
+*.dylib
+
+# IDE
+.vs/
+.vscode/
+*.sln
+*.vcxproj*
+*.user
+*.suo
+.idea/
+*.xcodeproj/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# JUCE (cloned fresh in CI)
+JUCE/
+
+# Packages
+*.zip
+*.tar.gz
+*.7z
+*.pkg
+
+# OS
+.DS_Store
+Thumbs.db
+*.app
+
+# Plugin binaries
+*_artefacts/
